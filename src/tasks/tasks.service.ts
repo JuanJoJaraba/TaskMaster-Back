@@ -41,4 +41,12 @@ export class TasksService {
         }
         ).then((response) => response).catch((error) => { return { "message_error": "NOT UPDATE TASK" } });
     }
+    async deleteTask(_id: number): Promise<number>{
+        return this.taskModel.destroy({
+            where:{
+                id:_id
+            }
+        }
+        )
+    }
 }
