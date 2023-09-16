@@ -1,16 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { UserLoginDto } from './dto/user-login-dto';
+import { JwtService } from '@nestjs/jwt';
 import { Users } from './modelos/usuario.entity';
 import { UserCreateDto } from './dto/crear-usuario-dto';
 import { UserUpdateDto } from './dto/update-usuario-dto';
+import { AuthDto } from 'src/auth/dto/create-auth.dto';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectModel(Users)
         private readonly usersModel: typeof Users,
-    ) { }
+        private jwtService: JwtService) { }
+
 
     findAll(): Promise<Users[]> {
         return this.usersModel.findAll();
@@ -25,14 +27,23 @@ export class UsersService {
         }).then((response) => response).catch((error) => error);
     }
 
-    async queryLogin(dto: UserLoginDto): Promise<Users | any> {
-        let  user =  await this.usersModel.findOne({ where: { email: dto.email, password: dto.password }, attributes: ['name', 'lastName'] });
-        if(user === null ){
-            return {"message":"No existe el usuario"}
-        }else{
-            return user
-        }
+
+    async queryLogin(authDto: AuthDto) {
+        let user = await this.usersModel.findOne({
+            where: {
+                email: authDto.email,
+                password: authDto.password
+            }
+
+        })
+        if (user === null || user ===undefined) {
+            throw new UnauthorizedException();
+        } const payload = { name: user.name, email: user.email, id: user.id };
+        return {
+            token: await this.jwtService.signAsync(payload), name: user.name, id: user.id
+        };
     }
+
     async updateUser(_id: number, dto: UserUpdateDto): Promise<Users | any> {
         return await this.usersModel.update(
             {
@@ -44,6 +55,7 @@ export class UsersService {
             where: { id: _id }
         }
         ).then((response) => response).catch((error) => { return { "message_error": "NOT UPDATE TASK" } });
+
     }
     async getAllUserForId(_id: number): Promise<Users> {
         return await this.usersModel.findOne(

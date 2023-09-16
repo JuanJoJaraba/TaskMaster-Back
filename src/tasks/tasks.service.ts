@@ -25,6 +25,7 @@ export class TasksService {
             title: dto.title,
             description: dto.description,
             priority: dto.priority,
+            status: dto.status,
             datatime: dto.datetime
 
         }).then ((response) => response).catch((error)=> {return {"message error": "exist title task"}});
@@ -35,6 +36,7 @@ export class TasksService {
                 title: dto.title,
                 description: dto.description,
                 priority: dto.priority,
+                status: dto.status,
                 datetime: dto.datetime
             }, {
             where: { id: _id }

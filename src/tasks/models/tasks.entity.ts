@@ -13,5 +13,8 @@ export class Tasks extends Model {
     priority: string
 
     @Column
+    status: string
+
+    @Column
     description: string 
 }
