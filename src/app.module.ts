@@ -4,7 +4,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule} from './users/usuarios.module';
 import { MailModule } from './mail/mail.module';
 import { ConfigModule } from '@nestjs/config';
-import { TestingModule } from './testing/testing.module';
 import { AuthModule } from './auth/auth.module';
 
 
@@ -27,7 +26,6 @@ import { AuthModule } from './auth/auth.module';
     TasksModule,
     UsersModule,
     MailModule,
-    TestingModule,
     AuthModule,
    
    

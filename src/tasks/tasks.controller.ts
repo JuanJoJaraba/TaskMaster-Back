@@ -29,4 +29,9 @@ export class TasksController {
     async deleteTaskRoute (@Param() params: any): Promise <number>{
         return await this.service.deleteTask(params.id)
     }
+    @Get(':userId')
+    async getTasksByUser(@Param('userId') userId: number): Promise<Tasks[]> {
+      const tasks = await Tasks.findAll({ where: { userId } });
+      return tasks;
+    }
 }

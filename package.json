@@ -28,6 +28,7 @@
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/sequelize": "^10.0.0",
+    "bcryptjs": "^2.4.3",
     "md5": "^2.3.0",
     "mysql2": "^3.5.2",
     "react-jwt": "^1.2.0",

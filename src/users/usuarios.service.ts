@@ -6,8 +6,12 @@ import { UserCreateDto } from './dto/crear-usuario-dto';
 import { UserUpdateDto } from './dto/update-usuario-dto';
 import { AuthDto } from 'src/auth/dto/create-auth.dto';
 
+var md5 = require('md5');
 @Injectable()
 export class UsersService {
+    create(user: { name: string; lastName: string; email: string; password: string; }) {
+      throw new Error('Method not implemented.');
+    }
     constructor(
         @InjectModel(Users)
         private readonly usersModel: typeof Users,
@@ -23,7 +27,7 @@ export class UsersService {
             name: dto.name,
             lastName: dto.lastName,
             email: dto.email,
-            password: dto.password
+            password: md5(dto.password)
         }).then((response) => response).catch((error) => error);
     }
 
@@ -32,7 +36,7 @@ export class UsersService {
         let user = await this.usersModel.findOne({
             where: {
                 email: authDto.email,
-                password: authDto.password
+                password: md5(authDto.password)
             }
 
         })

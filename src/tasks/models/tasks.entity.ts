@@ -1,10 +1,11 @@
-import {Column, Model, Table} from "sequelize-typescript"
+import { BelongsTo, Column, ForeignKey, Model, Table } from "sequelize-typescript"
+import { Users } from "src/users/modelos/usuario.entity"
 
 @Table
 export class Tasks extends Model {
 
-    @Column({unique: true })
-    title: string 
+    @Column({ unique: true })
+    title: string
 
     @Column
     datetime: Date
@@ -16,5 +17,13 @@ export class Tasks extends Model {
     status: string
 
     @Column
-    description: string 
+    description: string
+
+    @ForeignKey(() => Users)
+    @Column
+    userId: number;
+
+    @BelongsTo(() => Users)
+    user: Users;
+
 }
